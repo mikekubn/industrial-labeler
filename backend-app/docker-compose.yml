@@ -1,0 +1,37 @@
+# docker-compose.yml
+
+version: '3.8'
+services:
+
+  postgres:
+    image: postgres:17.7-alpine3.23
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_SCHEMA=app
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - '5434:5432'
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - '3000:3000'
+    environment:
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - BETTER_AUTH_URL=${BETTER_AUTH_URL}
+      - BETTER_AUTH_DISABLE_SIGNUP=${BETTER_AUTH_DISABLE_SIGNUP}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - postgres
+
+
+volumes:
+  postgres:
+

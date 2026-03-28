@@ -1,0 +1,23 @@
+{
+  "editor.formatOnSave": true,
+  /*
+   * setup biome (Biome Extension for VS Code)
+   */
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit",
+    "source.fixAll.biome": "explicit"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  "workbench.editor.customLabels.patterns": {
+    "**/app/**/{page,layout,index}.{ts,tsx}": "(${dirname})/${filename}.${extname}",
+    "**/index.{ts,tsx}": "${dirname}/index.${extname}"
+  },
+  
+  /*
+   * disable prettier for now (Prettier - Code formatter)
+   * "editor.defaultFormatter": "esbenp.prettier-vscode",
+   */
+}

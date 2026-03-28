@@ -1,0 +1,1 @@
+export { CreateRecordForm } from "./form";

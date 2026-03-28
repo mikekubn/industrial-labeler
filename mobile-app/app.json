@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.labeler-app"
+      "bundleIdentifier": "com.anonymous.labelerapp"
     },
     "android": {
       "usesCleartextTraffic": true,
@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.labeler-app",
+      "package": "com.anonymous.labelerapp",
       "permissions": [
         "android.permission.BLUETOOTH",
         "android.permission.BLUETOOTH_ADMIN",

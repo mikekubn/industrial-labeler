@@ -3,7 +3,7 @@ import type { EventEmitter2 } from '@nestjs/event-emitter';
 import type { PrismaClient } from '../../generated/prisma/client';
 import { expo } from '@better-auth/expo';
 
-import { betterAuth } from 'better-auth';
+import { type Auth, betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { admin, openAPI, username } from 'better-auth/plugins';
 import { extractEnvVariableToBoolean } from './env';
@@ -17,7 +17,7 @@ const getAuth = ({
   eventEmitter: EventEmitter2;
   logger: Logger;
   prisma: PrismaClient;
-}) =>
+}): Auth =>
   betterAuth({
     url: process.env.BETTER_AUTH_URL,
     secret: process.env.BETTER_AUTH_SECRET,

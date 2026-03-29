@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "android": "expo run:android",
+    "dev": "APP_VARIANT=development expo start",
+    "dev:android": "APP_VARIANT=development expo run:android",
+    "prod:android": "APP_VARIANT=production expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "biome check .",

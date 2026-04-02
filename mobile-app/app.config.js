@@ -4,7 +4,7 @@ export default {
   expo: {
     name: IS_DEV ? "Labeler App (Dev)" : "Labeler App",
     slug: "labeler-app",
-    version: "1.0.0",
+    version: "1.0.1",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: "labelerapp",
@@ -15,10 +15,12 @@ export default {
       backgroundColor: "#ffffff"
     },
     ios: {
+      buildNumber: "1",
       supportsTablet: true,
       bundleIdentifier: IS_DEV ? "com.labelerapp.dev" : "com.labelerapp"
     },
     android: {
+      versionCode: 3,
       usesCleartextTraffic: true,
       adaptiveIcon: {
         backgroundColor: "#E6F4FE",

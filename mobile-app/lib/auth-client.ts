@@ -8,11 +8,12 @@ import { createAuthClient } from "better-auth/react";
 import { expoClient, getCookie, normalizeCookieName } from "@better-auth/expo/client";
 import { apiBaseUrl, basePath } from "@/constants/envs";
 
+import { adminClient } from "better-auth/client/plugins";
 import { resolveBackendOriginForNative } from "./localhost-android";
 
 /** Must match `scheme` / `storagePrefix` passed to {@link expoClient}. */
-const AUTH_EXPO_SCHEME = "mobile-app";
-const AUTH_EXPO_STORAGE_PREFIX = "mobile-app";
+const AUTH_EXPO_SCHEME = "labelerapp";
+const AUTH_EXPO_STORAGE_PREFIX = "labelerapp";
 
 const origin = resolveBackendOriginForNative(apiBaseUrl.replace(/\/$/, ""));
 const normalizedPath = basePath.startsWith("/") ? basePath : `/${basePath}`;
@@ -43,6 +44,7 @@ const getBetterAuthFetchHeaders = (): Record<string, string> => {
 const authClient = createAuthClient({
   baseURL,
   plugins: [
+    adminClient(),
     expoClient({
       scheme: AUTH_EXPO_SCHEME,
       storagePrefix: AUTH_EXPO_STORAGE_PREFIX,

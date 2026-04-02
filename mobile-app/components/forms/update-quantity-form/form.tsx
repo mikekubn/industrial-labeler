@@ -102,7 +102,7 @@ const UpdateQuantityForm = ({ quantity }: { quantity: QuantityResponseSchema | n
         <View style={styles.buttonContainer}>
           <Pressable
             accessibilityRole="button"
-            style={styles.button}
+            style={[styles.actionButton, styles.button]}
             onPress={handleSubmit(onSubmit)}
             disabled={updateQuantityMutation.isPending}
           >
@@ -113,7 +113,7 @@ const UpdateQuantityForm = ({ quantity }: { quantity: QuantityResponseSchema | n
 
           <Pressable
             accessibilityRole="button"
-            style={styles.clearButton}
+            style={[styles.actionButton, styles.clearButton]}
             onPress={() => {
               methods.reset({
                 isMarked: false,
@@ -168,13 +168,20 @@ const styles = StyleSheet.create({
     fontWeight: "600"
   },
   buttonContainer: {
+    width: "100%",
     flexDirection: "row",
-    alignItems: "center",
+    flexWrap: "wrap",
+    alignItems: "stretch",
     gap: 16
+  },
+  actionButton: {
+    flexGrow: 1,
+    flexShrink: 1,
+    minWidth: 140
   },
   clearButton: {
     paddingVertical: 16,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     borderRadius: 10,
     backgroundColor: "#c62828"
   }

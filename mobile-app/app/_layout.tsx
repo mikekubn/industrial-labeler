@@ -16,7 +16,6 @@ import "react-native-reanimated";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { authClient } from "@/lib/auth-client";
 import { getQueryClient } from "@/lib/query-client";
@@ -33,25 +32,20 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+  const colorScheme = useColorScheme();
+  const [queryClient] = useState(() => getQueryClient());
+  const { data: session, isPending: sessionPending } = authClient.useSession();
+
   const [loaded, error] = useFonts({
     SpaceMono
   });
-  const { data: session, isPending: sessionPending } = authClient.useSession();
-
-  const [queryClient] = useState(() => getQueryClient());
-
-  const colorScheme = useColorScheme();
-  useAuthRedirect(session);
+  const isUserAuthenticated = !!session?.user;
 
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded && !sessionPending) {
+    if (loaded || error || (loaded && !sessionPending)) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, sessionPending]);
+  }, [loaded, error, sessionPending]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -60,19 +54,21 @@ const RootLayout = () => {
           <SafeAreaProvider>
             <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
               <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="sign-in" options={{ headerShown: false, animation: "fade" }} />
-                <Stack.Screen
-                  name="modal"
-                  options={{
-                    presentation: "formSheet",
-                    title: "Informace o uživateli",
-                    sheetGrabberVisible: true,
-                    sheetAllowedDetents: [0.6, 1],
-                    sheetInitialDetentIndex: 0,
-                    sheetCornerRadius: 16
-                  }}
-                />
+                <Stack.Protected guard={isUserAuthenticated}>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    name="modal"
+                    options={{
+                      presentation: "formSheet",
+                      title: "Informace o uživateli",
+                      sheetGrabberVisible: true,
+                      sheetAllowedDetents: [0.6, 1],
+                      sheetInitialDetentIndex: 0,
+                      sheetCornerRadius: 120
+                    }}
+                  />
+                </Stack.Protected>
               </Stack>
               <Toaster position="top-center" richColors closeButton />
             </ThemeProvider>

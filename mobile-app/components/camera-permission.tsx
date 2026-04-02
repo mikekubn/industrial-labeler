@@ -1,10 +1,10 @@
-import { useCameraPermissions } from "expo-camera";
-
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-const CameraPermission = () => {
-  const [, requestPermission] = useCameraPermissions();
+type CameraPermissionProps = {
+  onRequestPermission: () => void | Promise<void>;
+};
 
+const CameraPermission = ({ onRequestPermission }: CameraPermissionProps) => {
   return (
     <View style={styles.container}>
       <ScrollView
@@ -13,7 +13,7 @@ const CameraPermission = () => {
         showsVerticalScrollIndicator
       >
         <Text style={styles.message}>Potřebujeme vaše oprávnění k přístupu k kaměře</Text>
-        <Pressable accessibilityRole="button" style={styles.scanButton} onPress={requestPermission}>
+        <Pressable accessibilityRole="button" style={styles.scanButton} onPress={onRequestPermission}>
           <Text style={styles.scanButtonText}>Udělit oprávnění k kaměře</Text>
         </Pressable>
       </ScrollView>

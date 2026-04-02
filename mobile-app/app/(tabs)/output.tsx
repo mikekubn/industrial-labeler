@@ -13,7 +13,7 @@ import { toast } from "sonner-native";
 
 const OutputScreen = () => {
   const quantityService = getQuantityService();
-  const [permission] = useCameraPermissions();
+  const [permission, requestPermission] = useCameraPermissions();
   const [openCamera, setOpenCamera] = useState(false);
   const [quantityId, setQuantityId] = useState<string | null>(null);
 
@@ -41,8 +41,16 @@ const OutputScreen = () => {
     [refetch]
   );
 
+  const handleRequestPermission = useCallback(async () => {
+    const response = await requestPermission();
+
+    if (response.granted) {
+      setOpenCamera(true);
+    }
+  }, [requestPermission]);
+
   if (!permission || !permission.granted) {
-    return <CameraPermission />;
+    return <CameraPermission onRequestPermission={handleRequestPermission} />;
   }
 
   return (

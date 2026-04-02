@@ -7,11 +7,14 @@ import { AndroidTabIcon } from "@/components/AndoridTabIcon";
 import Colors from "@/constants/Colors";
 import { useClientOnlyValue } from "@/hooks/useClientOnlyValue";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { authClient } from "@/lib/auth-client";
 
 const TabLayout = () => {
   const colorScheme = useColorScheme();
   const router = useRouter();
   const tint = Colors[colorScheme].tint;
+  const { data: session } = authClient.useSession();
+  const isAdmin = session?.user?.role === "admin";
 
   return (
     <Tabs
@@ -42,20 +45,22 @@ const TabLayout = () => {
         )
       }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Záznamy",
-          tabBarIcon: AndroidTabIcon("list")
-        }}
-      />
-      <Tabs.Screen
-        name="input"
-        options={{
-          title: "Vstupní údaje",
-          tabBarIcon: AndroidTabIcon("input")
-        }}
-      />
+      <Tabs.Protected guard={isAdmin}>
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "Záznamy",
+            tabBarIcon: AndroidTabIcon("list")
+          }}
+        />
+        <Tabs.Screen
+          name="input"
+          options={{
+            title: "Vstupní údaje",
+            tabBarIcon: AndroidTabIcon("input")
+          }}
+        />
+      </Tabs.Protected>
       <Tabs.Screen
         name="output"
         options={{

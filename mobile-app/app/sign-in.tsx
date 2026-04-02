@@ -1,7 +1,8 @@
 import { useRouter } from "expo-router";
 
 import { useState } from "react";
-import { ActivityIndicator, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Keyboard, Pressable, StyleSheet, Text, TextInput } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { authClient } from "@/lib/auth-client";
@@ -14,6 +15,7 @@ export default function SignIn() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleLogin = async () => {
+    Keyboard.dismiss();
     setErrorMessage(null);
     setSubmitting(true);
     try {
@@ -40,7 +42,12 @@ export default function SignIn() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.container}>
+      <KeyboardAwareScrollView
+        bottomOffset={10}
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="always"
+        showsVerticalScrollIndicator
+      >
         <Text style={styles.title}>Přihlášení</Text>
         <TextInput
           autoCapitalize="none"
@@ -64,11 +71,11 @@ export default function SignIn() {
         {submitting ? (
           <ActivityIndicator style={styles.spinner} />
         ) : (
-          <View style={styles.button}>
-            <Button title="Přihlásit se" onPress={handleLogin} />
-          </View>
+          <Pressable onPress={handleLogin} style={styles.button}>
+            <Text style={styles.buttonText}>Přihlásit se</Text>
+          </Pressable>
         )}
-      </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }
@@ -76,13 +83,24 @@ export default function SignIn() {
 const styles = StyleSheet.create({
   safe: { flex: 1 },
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     gap: 12,
     paddingHorizontal: 24
   },
   button: {
-    marginTop: 20
+    marginTop: 26,
+    width: "100%",
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    backgroundColor: "#2563eb"
+  },
+  buttonText: {
+    fontSize: 17,
+    fontWeight: "600",
+    color: "#fff",
+    textAlign: "center"
   },
   title: {
     fontSize: 22,
